@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html ng-app="PizzaToppingApp">
+	<head>
+		<title>Pizza Topping App</title>
+	</head>
+	<body>
+		<h1>Pizza Topping App</h1>
+		<hr />
+		<h2>Create New Pizza Order</h2>
+		
+		<div ng-controller="PizzaToppingController as pt">
+            <form name="orderForm">
+                
+                <label> Customer Name: </label>
+                <input type="text" ng-model="pt.customerNameValue"><br /><br />
+                
+                <label> Size: </label>
+                <select ng-model="pt.sizeValue" 
+                    ng-options="size.size_name for size in pt.size">
+                </select> <br /><br />
+                
+                <label> Crust: </label>
+                <select ng-model="pt.crustValue" 
+                    ng-options="crust.crust_name for crust in pt.crust">
+                </select> <br /><br />
+                
+                <label> Sauce: </label>
+                <select ng-model="pt.sauceValue" 
+                    ng-options="sauce.sauce_name for sauce in pt.sauce">
+                </select> <br /><br />
+                
+                <fieldset style="width: 250px;">
+                    <legend>Toppings</legend>
+                        <div ng-model="pt.toppingValue" ng-repeat="topping in pt.toppings">
+                            <label>
+                            <input type="checkbox" ng-click="pt.toggle(topping)" />
+                            {{ topping.topping_name }}
+                            </label>
+                        </div>
+                </fieldset>
+                <br />
+                
+                <input type="button" value="Save" ng-click="pt.update()" /> 
+            
+            
+            </form>
+		    <hr />
+		    <div style="float: left;" >
+		        
+		    </style>
+    		    <h2>List Of Orders</h2>
+    		    
+                <ul ng-if="pt.pizzas != null" style="list-style-type:none;">
+                    <li ng-repeat="pizza in pt.pizzas">
+                        <spam ng-hide="showEditForm">{{pizza.customerName}} - {{pizza.size}} - {{pizza.crust}} - {{pizza.sauce}}</spam> 
+                        <input type="button" value="Edit {{pizza.customerName}}'s Order" ng-click="showEditForm = !showEditForm; pt.edit(pizza);" ng-hide="showEditForm"> 
+                        <input type="button" value="Remove" ng-click="pt.remove($index)" ng-hide="showEditForm"><br />
+                        <ul ng-hide="showEditForm">
+                            <li ng-repeat="topping in pizza.topping">{{ topping.topping_name }}</li>
+                        </ul>
+    		            <br />
+    		            
+    		            <div style="margin: 5px 50px 15px 50px; padding: 50px; float: left; border: 5px solid red;" ng-show="showEditForm">
+            			    <form name="EditForm">
+                            
+                            <h3>{{ pizza.customerName }}'s Order</h3>
+                            <p>Only enter details you want to change.</p>
+                            <label> Size: </label>
+                            <select ng-model="pt.sizeValue2" 
+                                ng-options="size.size_name for size in pt.size">
+                            </select> {{ pizza.size }} <br /><br />
+                            
+                            <label> Crust: </label>
+                            <select ng-model="pt.crustValue2" 
+                                ng-options="crust.crust_name for crust in pt.crust">
+                            </select> {{ pizza.crust }} <br /><br />
+                            
+                            <label> Sauce: </label>
+                            <select ng-model="pt.sauceValue2" 
+                                ng-options="sauce.sauce_name for sauce in pt.sauce">
+                            </select> {{ pizza.sauce }} <br /><br />
+                            
+                            <fieldset style="width: 250px;">
+                                <legend>Toppings</legend>
+                                    <div ng-model="pt.toppingValue3" ng-repeat="topping in pizza.topping">
+                                        <label>
+                                        <input type="checkbox" ng-click="pt.toggle(topping)"  checked/>
+                                        {{ topping.topping_name }}
+                                        </label>
+                                    </div>
+                                    <div ng-model="pt.toppingValue2" ng-repeat="topping in pt.toppings">
+                                        <label>
+                                        <input type="checkbox" ng-click="pt.toggle(topping)"/>
+                                        {{ topping.topping_name }}
+                                        </label>
+                                    </div>
+                            </fieldset>
+                            <br />
+                            <input type="button" value="Update Order" ng-click="pt.update2(pizza, $index)" /> 
+                            <input type="button" value="Delete Order" ng-click="pt.remove($index)" />
+                            <input type="button" value="Cancel Edit" ng-click="showEditForm = !showEditForm" /><br />
+                        </form>
+            			</div>
+                    </li>
+                </ul>
+			</div>
+			
+		</div>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+        <script src="app.js"></script>	
+	</body>
+</html>
